@@ -160,44 +160,44 @@ def run(
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
 
     
-            if len(det): # detect되면
+            if len(det): # if detect sth
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_boxes(im.shape[2:], det[:, :4], im0.shape).round()
 
-                # modify - 연속인 클래스 5번이면 결과 내보내기
+                # modify - if continuous 5 time, then send the result
                 if len(cls_list)>4:
                   cls_list.popleft()
                 for cls in det[:, 5].unique():
-                  clss = [] # 한 프레임에 2개 이상 객체 detect될 때
+                  clss = [] # if 2 more items in one frame
                   clss.append(names[int(cls)]) # modify
                 cls_list.append(clss)
                 print(cls_list) # check
                 
-                # modify - 무언가 detect되면 frame_list에 추가 (리스트 len은 max 5)
+                # modify - if sth detected, append frame_list
                 if len(frame_list)>4:
                   frame_list.popleft()
                 frame_list.append(frame)
                 print(frame_list) # check
 
-                # modify - 연속인지 체크
+                # modify - check whether it's continuous
                 if len(cls_list)==5:
                   cont = [frame_list[0],(frame_list[0]+1),(frame_list[0]+2),(frame_list[0]+3),(frame_list[0]+4)]
                   print("cont: ",cont)
-                  if (cont == list(frame_list)): # 5초 연속이면
+                  if (cont == list(frame_list)): # if 5sec continue
                     print('5sec continue')
                     faint = 0
                     climbing = 0
-                    for clss in cls_list: # 연속일 동안 detect한 클래스가 같은지 확인
+                    for clss in cls_list: # check whether it has a same class during 5 sec
                       if 'faint' in clss:
                         faint += 1
                       elif 'climbing' in clss:
                         climbing += 1
                     
-                    # 위험 상황이 5개 이상이면
+                    # if the dangerous situation continue to 5 sec
                     if faint==5:
                       print('5 faint detected in 5 sec') # check
                       result_savepath = str(save_dir/f'faint_{p.stem}_{frame_list[0]}.txt')
-                      text_file = open(result_savepath, "wt")
+                      text_file = open(result_savepath, "wt", encoding='cp949')
                       n = text_file.write('faint')
                       text_file.close()
                       frame_list = deque()
@@ -206,7 +206,7 @@ def run(
                     elif climbing==5:
                       print('5 climbing detected in 5 sec') # check
                       result_savepath = str(save_dir/f'climbing_{p.stem}_{frame_list[0]}.txt')
-                      text_file = open(result_savepath, "wt")
+                      text_file = open(result_savepath, "wt", encoding='cp949')
                       n = text_file.write('climbing')
                       text_file.close()
                       frame_list = deque()
