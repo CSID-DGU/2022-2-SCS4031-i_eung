@@ -1,3 +1,6 @@
+# 2022-2-SCS4031-i_eung
+융합캡스톤디자인 이응팀입니다.
+
 
 ```powershell
 git clone https://github.com/CSID-DGU/2022-2-SCS4031-i_eung.git
