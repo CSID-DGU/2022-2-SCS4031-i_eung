@@ -1,4 +1,4 @@
-
+# This is a custom file of detect.py in YOLOv5
 # YOLOv5 🚀 by Ultralytics, GPL-3.0 license
 """
 Run YOLOv5 detection inference on images, videos, directories, globs, YouTube, webcam, streams, etc.
@@ -182,18 +182,26 @@ def run(
                 # modify - check whether it's continuous
                 if len(cls_list)==5:
                   cont = [frame_list[0],(frame_list[0]+1),(frame_list[0]+2),(frame_list[0]+3),(frame_list[0]+4)]
-                  print("cont: ",cont)
-                  if (cont == list(frame_list)): # if 5sec continue
-                    print('5sec continue')
+                  if (cont == list(frame_list)): # if sth detected for consecutive 5 sec
                     faint = 0
                     climbing = 0
-                    for clss in cls_list: # check whether it has a same class during 5 sec
+                    faintlay = 0
+                    climblay = 0
+                    # check whether it has (5faint | 5climbing | 3faint+2lay | 3climbing+2lay) patterns during 5 sec
+                    for i, clss in enumerate(cls_list):
                       if 'faint' in clss:
                         faint += 1
+                        if (i==0 or i==1 or i==2):
+                          faintlay += 1
                       elif 'climbing' in clss:
                         climbing += 1
+                        if (i==0 or i==1 or i==2):
+                          climblay += 1
+                      elif (i==3 or i==4) and ('lay' in clss):
+                        faintlay += 1
+                        climblay += 1
                     
-                    # if the dangerous situation continue to 5 sec
+                    # if a dangerous situation continue to 5 sec
                     if faint==5:
                       print('5 faint detected in 5 sec') # check
                       result_savepath = str(save_dir/f'faint_{p.stem}_{frame_list[0]}.txt')
@@ -211,8 +219,25 @@ def run(
                       text_file.close()
                       frame_list = deque()
                       cls_list = deque()
-                  
-
+                    
+                    elif faintlay==5:
+                      print('faint-lay detected in 5 sec') # check
+                      result_savepath = str(save_dir/f'faint_{p.stem}_{frame_list[0]}.txt')
+                      text_file = open(result_savepath, "wt", encoding='cp949')
+                      n = text_file.write('faintlay')
+                      text_file.close()
+                      frame_list = deque()
+                      cls_list = deque()
+                    
+                    elif climblay==5:
+                      print('climb-lay detected in 5 sec') # check
+                      result_savepath = str(save_dir/f'climbing_{p.stem}_{frame_list[0]}.txt')
+                      text_file = open(result_savepath, "wt", encoding='cp949')
+                      n = text_file.write('climblay')
+                      text_file.close()
+                      frame_list = deque()
+                      cls_list = deque()
+                
                 
                 # Print results
                 for c in det[:, 5].unique():
@@ -250,6 +275,7 @@ def run(
                 cv2.waitKey(1)  # 1 millisecond
 
             # Save results (image with detections)
+            '''
             if save_img:
                 if dataset.mode == 'image':
                     cv2.imwrite(save_path, im0)
@@ -267,6 +293,7 @@ def run(
                         save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
                         vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
                     vid_writer[i].write(im0)
+            '''
 
         # Print time (inference-only)
         LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")
