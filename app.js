@@ -78,7 +78,7 @@ const { off } = require('process');
 console.log(socketIO);
 const io = socketIO(server);
 console.log(io);
-const directoryPath = path.join(__dirname, '/runs/detect/exp6')
+const directoryPath = path.join(__dirname, '/runs/detect/exp')
 
 io.on('connection', (socket) => {
         let fileNum = 1;
