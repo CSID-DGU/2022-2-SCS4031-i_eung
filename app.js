@@ -70,7 +70,7 @@ function callback(error, response, body) {
 }
 
 //오디오 사용
-const player = require('play-sound')(opts = {})
+// const player = require('play-sound')(opts = {})
 
 //웹소켓
 const socketIO = require('socket.io');
