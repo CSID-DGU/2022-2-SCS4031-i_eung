@@ -81,8 +81,8 @@ console.log(io);
 const directoryPath = path.join(__dirname, '/runs/detect/exp')
 
 io.on('connection', (socket) => {
-        let fileNum = 1;
-        let NewFileNum = 1;
+        let fileNum = 0;
+        let NewFileNum = 0;
         setInterval(function () {
             //현재 파일의 개수
             fs.readdir(directoryPath, (err, files) => {
@@ -110,30 +110,30 @@ io.on('connection', (socket) => {
                         }
                     })
                     //시간 순으로 정렬
-                    // list.sort((a,b) => b.mtime - a.mtime)
+                    list.sort((a,b) => b.mtime - a.mtime)
                     console.log(list)
                     // console.log(list);
                     
                     // 위험상황 확인 후 알림
-                    if(list[1].filename == 'faint'){
+                    if(list[0].filename == 'faint'){
                         io.emit('chatting', `아이에게 쓰러짐 행동이 감지되었습니다.`);
                         //알림음 재생
                         
-                        player.play('emergency.mp3', function(err){
-                            //if(err) throw err
-                            console.log(err)
-                        });
+//                         player.play('emergency.mp3', function(err){
+//                             //if(err) throw err
+//                             console.log(err)
+//                         });
                         
                         //카톡 나에게 전송
                         request(faint_options, callback);
                         console.log('faint 발생');
-                    } else if(list[1].filename == 'climbing'){
+                    } else if(list[0].filename == 'climbing'){
                         io.emit('chatting', `아이에게 추락 행동이 감지되었습니다.`);
                         //알림음 재생
-                        player.play('emergency.mp3', function(err){
-                            //if(err) throw err
-                            console.log(err)
-                        });
+//                         player.play('emergency.mp3', function(err){
+//                             //if(err) throw err
+//                             console.log(err)
+//                         });
                         //카톡 나에게 전송
                         request(climb_options, callback);
                         console.log('climb 발생');
