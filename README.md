@@ -44,11 +44,10 @@ https://nodejs.org/en/ 에서 본인 컴퓨터 버전에 맞는 node를 설치�
 git clone https://github.com/CSID-DGU/2022-2-SCS4031-i_eung.git
 cd 2022-2-SCS4031-i_eung
 pip install -r requirements.txt   # yolo 모듈 설치 (시간이 소요될 수 있습니다)
-npm i                             # node.js 모듈 설치
-npm install express
+
+npm install express               # node.js 모듈 설치
 npm install dotenv
 npm install request
-npm link socket.io
 npm i socket.io
 npm i ejs
 ```
