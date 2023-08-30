@@ -61,3 +61,12 @@ node app.js   # 위 detect 명령어 실행중에 다른 터미널에 서버 명
 
 ## License
 GPL 3.0
+<br>
+<br>
+
+
+## Contest
+최우수상<br>
+제2회 소외계층을 위한 AI활용 아이디어 공모전, 한국교육학술정보원장<br>
+시청각 장애인 보호자를 위한 영유아 위험 행동 알림 서비스<br>
+<img src="https://github.com/CSID-DGU/2022-2-SCS4031-i_eung/assets/70680729/8291f0cc-a484-49ba-82a5-bee7b6788aea" width="40%"/><br>
